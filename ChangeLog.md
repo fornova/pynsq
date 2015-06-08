@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.5.1 - 2015-06-08
+
+ * #101 - catch connection closed error on read_bytes
+
 ## 0.6.5 - 2014-11-11
 
  * #100 - add `Reader.close()`

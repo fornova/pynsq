@@ -2,7 +2,7 @@
 
 `pynsq` is the official Python client library for [NSQ][nsq].
 
-Latest stable release is **[0.6.5][latest_stable]**
+Latest stable release is **[0.6.5.1][latest_stable]**
 
 [![Build Status](https://secure.travis-ci.org/bitly/pynsq.png)](http://travis-ci.org/bitly/pynsq)
 
