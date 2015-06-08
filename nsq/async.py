@@ -186,8 +186,17 @@ class AsyncConn(EventedMixin):
         self._start_read()
         self.trigger('connect', conn=self)
 
+    def _read_bytes(self, size, callback):
+        try:
+            self.stream.read_bytes(size, callback)
+        except IOError:
+            self.close()
+            self.trigger(event.ERROR,
+                         conn=self,
+                         error=protocol.ConnectionClosedError('Stream is closed'))
+
     def _start_read(self):
-        self.stream.read_bytes(4, self._read_size)
+        self._read_bytes(4, self._read_size)
 
     def _socket_close(self):
         self.state = 'DISCONNECTED'
@@ -199,11 +208,13 @@ class AsyncConn(EventedMixin):
     def _read_size(self, data):
         try:
             size = struct.unpack('>l', data)[0]
-            self.stream.read_bytes(size, self._read_body)
         except Exception:
             self.close()
-            self.trigger('error', conn=self,
+            self.trigger('error',
+                         conn=self,
                          error=nsq.IntegrityError('failed to unpack size'))
+            return
+        self._read_bytes(size, self._read_body)
 
     def _read_body(self, data):
         try:
