@@ -191,7 +191,7 @@ class AsyncConn(EventedMixin):
             self.stream.read_bytes(size, callback)
         except IOError:
             self.close()
-            self.trigger(event.ERROR,
+            self.trigger('error',
                          conn=self,
                          error=protocol.ConnectionClosedError('Stream is closed'))
 
